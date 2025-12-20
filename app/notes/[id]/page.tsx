@@ -17,7 +17,7 @@ const NoteDetails = async ({ params }: Props) => {
 
   const queryClient = new QueryClient();
 
-  // Предзагрузка данных для гидратации
+  // Попередня загрузка данних перед гідрацією
   await queryClient.prefetchQuery({
     queryKey: ['note', id],
     queryFn: () => fetchNoteById(id),
@@ -25,7 +25,7 @@ const NoteDetails = async ({ params }: Props) => {
 
   return (
     <HydrationBoundary state={dehydrate(queryClient)}>
-      {/* Передаём id как проп */}
+      {/* Передаємо id як проп */}
       <NoteDetailsClient id={id} />
     </HydrationBoundary>
   );

@@ -3,6 +3,6 @@
 import { redirect } from 'next/navigation';
 
 export default function NotesPage() {
-  // Перенаправляем на "all notes"
+  // Перенаправлення на "all notes"
   redirect('/notes/filter/all');
 }

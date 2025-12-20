@@ -1,12 +1,12 @@
 //components/NotePreview/NotePreview.tsx
 
-"use client";
+'use client';
 
-import { useEffect } from "react";
-import Modal from "@/components/Modal/Modal";
-import { fetchNoteById } from "@/lib/api";
-import { useQuery } from "@tanstack/react-query";
-import css from "./NotePreview.module.css";
+import { useEffect } from 'react';
+import Modal from '@/components/Modal/Modal';
+import { fetchNoteById } from '@/lib/api';
+import { useQuery } from '@tanstack/react-query';
+import css from './NotePreview.module.css';
 
 interface NotePreviewProps {
   noteId: string;
@@ -14,22 +14,22 @@ interface NotePreviewProps {
 }
 
 export default function NotePreview({ noteId, onClose }: NotePreviewProps) {
-  // Перехватываем Escape для закрытия
+  // Перехвачуємо Escape для закриття
   useEffect(() => {
     const handleEsc = (e: KeyboardEvent) => {
-      if (e.key === "Escape") onClose();
+      if (e.key === 'Escape') onClose();
     };
-    document.addEventListener("keydown", handleEsc);
-    return () => document.removeEventListener("keydown", handleEsc);
+    document.addEventListener('keydown', handleEsc);
+    return () => document.removeEventListener('keydown', handleEsc);
   }, [onClose]);
 
-  // Получаем данные заметки
+  // Отримуємо данні нотатки
   const {
     data: note,
     isLoading,
     error,
   } = useQuery({
-    queryKey: ["note", noteId],
+    queryKey: ['note', noteId],
     queryFn: () => fetchNoteById(noteId),
     refetchOnMount: false,
   });
