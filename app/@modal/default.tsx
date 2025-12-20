@@ -1,4 +1,4 @@
-//
+//app/@modal/default.tsx
 
 const Default = () => null;
 

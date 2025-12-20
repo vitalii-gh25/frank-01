@@ -1,28 +1,39 @@
-import NotesLayout from '../layout';
+import {
+  QueryClient,
+  HydrationBoundary,
+  dehydrate,
+} from '@tanstack/react-query';
+
+import NotesClient from './Notes.client';
 import { fetchNotes } from '@/lib/api';
-import SidebarNotes from '../../../../components/SidevarNotes/SidebarNotes';
-import NoteList from '@/components/NoteList/NoteList';
 
 type Props = {
-  params: { slug?: string[] };
+  params: Promise<{ slug?: string[] }>;
 };
 
 const NotesByCategory = async ({ params }: Props) => {
-  const slugArr = params.slug || ['all'];
-  const tag = slugArr[0] === 'all' ? undefined : slugArr[0];
+  const { slug: slugArr } = await params;
+  const slug = slugArr || ['all'];
+  const tag = slug[0] === 'all' ? undefined : slug[0];
 
-  const data = await fetchNotes({ tag, page: 1, perPage: 12 });
+  const queryClient = new QueryClient();
+
+  await queryClient.prefetchQuery({
+    queryKey: ['notes', 1, '', tag],
+    queryFn: () =>
+      fetchNotes({
+        page: 1,
+        perPage: 12,
+        search: '',
+        tag,
+      }),
+  });
 
   return (
-    <NotesLayout sidebar={<SidebarNotes />}>
-      <h1>Notes List {tag ? `(Tag: ${tag})` : '(All)'}</h1>
-      {data.notes.length ? (
-        <NoteList notes={data.notes} />
-      ) : (
-        <p>No notes found.</p>
-      )}
-    </NotesLayout>
+    <HydrationBoundary state={dehydrate(queryClient)}>
+      <NotesClient defaultTag={tag} />
+    </HydrationBoundary>
   );
-};
+}
 
 export default NotesByCategory;
