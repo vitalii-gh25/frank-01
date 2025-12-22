@@ -13,7 +13,6 @@ export default function NotePreview() {
   const router = useRouter();
 
   const handleClose = () => {
-    // закрываем модалку возвратом на предыдущий URL
     router.back();
   };
 
