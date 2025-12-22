@@ -1,3 +1,5 @@
+//components/NoteList/NoteList.tsx
+
 'use client';
 
 import { useState } from 'react';
@@ -28,10 +30,6 @@ export default function NoteList({ notes }: NoteListProps) {
 
   const handleOpenPreview = (id: string) => {
     setPreviewId(id);
-  };
-
-  const handleClosePreview = () => {
-    setPreviewId(null);
   };
 
   return (
@@ -66,9 +64,8 @@ export default function NoteList({ notes }: NoteListProps) {
         ))}
       </ul>
 
-      {previewId && (
-        <NotePreview noteId={previewId} onClose={handleClosePreview} />
-      )}
+      {/* Відкриваємо модалку NotePreview на основі previewId */}
+      {previewId && <NotePreview noteId={previewId} />}
     </>
   );
 }
