@@ -1,7 +1,9 @@
-import type { ReactNode } from "react";
-import { useEffect } from "react";
-import { createPortal } from "react-dom";
-import css from "./Modal.module.css";
+//components/Modal/Modal.tsx
+
+import type { ReactNode } from 'react';
+import { useEffect } from 'react';
+import { createPortal } from 'react-dom';
+import css from './Modal.module.css';
 
 interface ModalProps {
   children: ReactNode;
@@ -10,8 +12,8 @@ interface ModalProps {
 
 // try to find existing modal root, fallback to document.body if not present
 const modalRoot =
-  (typeof document !== "undefined" && document.getElementById("modal-root")) ||
-  (typeof document !== "undefined" ? document.body : null);
+  (typeof document !== 'undefined' && document.getElementById('modal-root')) ||
+  (typeof document !== 'undefined' ? document.body : null);
 
 export default function Modal({ children, onClose }: ModalProps) {
   useEffect(() => {
@@ -19,17 +21,17 @@ export default function Modal({ children, onClose }: ModalProps) {
 
     // handler for Escape key
     const handleEsc = (e: KeyboardEvent) => {
-      if (e.key === "Escape") onClose();
+      if (e.key === 'Escape') onClose();
     };
 
     // prevent page scroll while modal is open
     const previousOverflow = document.body.style.overflow;
-    document.body.style.overflow = "hidden";
+    document.body.style.overflow = 'hidden';
 
-    document.addEventListener("keydown", handleEsc);
+    document.addEventListener('keydown', handleEsc);
 
     return () => {
-      document.removeEventListener("keydown", handleEsc);
+      document.removeEventListener('keydown', handleEsc);
       // restore previous overflow value
       document.body.style.overflow = previousOverflow;
     };
@@ -44,10 +46,10 @@ export default function Modal({ children, onClose }: ModalProps) {
       role="dialog"
       aria-modal="true"
     >
-      <div className={css.modal} onClick={(e) => e.stopPropagation()}>
+      <div className={css.modal} onClick={e => e.stopPropagation()}>
         {children}
       </div>
     </div>,
-    modalRoot
+    modalRoot,
   );
 }
