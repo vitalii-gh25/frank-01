@@ -1,8 +1,9 @@
-//components/NotePreview/NotePreview.tsx
+// NotePreview.client.tsx
 
 'use client';
 
-import { useEffect } from 'react';
+import { useEffect, useCallback } from 'react';
+import { useRouter } from 'next/navigation';
 import Modal from '@/components/Modal/Modal';
 import { fetchNoteById } from '@/lib/api';
 import { useQuery } from '@tanstack/react-query';
@@ -10,20 +11,26 @@ import css from './NotePreview.module.css';
 
 interface NotePreviewProps {
   noteId: string;
-  onClose: () => void;
 }
 
-export default function NotePreview({ noteId, onClose }: NotePreviewProps) {
-  // Перехвачуємо Escape для закриття
+export default function NotePreview({ noteId }: NotePreviewProps) {
+  const router = useRouter();
+
+  // стабільна функція закриття через router.back()
+  const handleClose = useCallback(() => {
+    router.back();
+  }, [router]);
+
+  // Перехоплення Escape для закриття модалки
   useEffect(() => {
     const handleEsc = (e: KeyboardEvent) => {
-      if (e.key === 'Escape') onClose();
+      if (e.key === 'Escape') handleClose();
     };
+
     document.addEventListener('keydown', handleEsc);
     return () => document.removeEventListener('keydown', handleEsc);
-  }, [onClose]);
+  }, [handleClose]); // тепер залежність стабільна
 
-  // Отримуємо данні нотатки
   const {
     data: note,
     isLoading,
@@ -42,7 +49,7 @@ export default function NotePreview({ noteId, onClose }: NotePreviewProps) {
     : `Created at: ${note.createdAt}`;
 
   return (
-    <Modal onClose={onClose}>
+    <Modal onClose={handleClose}>
       <div className={css.container}>
         <div className={css.item}>
           <div className={css.header}>

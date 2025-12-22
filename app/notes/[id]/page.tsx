@@ -9,15 +9,14 @@ import { fetchNoteById } from '@/lib/api';
 import NoteDetailsClient from '@/app/notes/[id]/NoteDetails.client';
 
 type Props = {
-  params: { id: string };
+  params: Promise<{ id: string }>;
 };
 
 const NoteDetails = async ({ params }: Props) => {
-  const { id } = params;
+  const { id } = await params;
 
   const queryClient = new QueryClient();
 
-  // Попередня загрузка данних перед гідрацією
   await queryClient.prefetchQuery({
     queryKey: ['note', id],
     queryFn: () => fetchNoteById(id),
@@ -25,7 +24,6 @@ const NoteDetails = async ({ params }: Props) => {
 
   return (
     <HydrationBoundary state={dehydrate(queryClient)}>
-      {/* Передаємо id як проп */}
       <NoteDetailsClient id={id} />
     </HydrationBoundary>
   );
