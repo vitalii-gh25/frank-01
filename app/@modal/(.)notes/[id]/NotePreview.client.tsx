@@ -33,10 +33,6 @@ export default function NotePreview() {
   return (
     <Modal onClose={handleClose}>
       <div className={css.container}>
-        <button className={css.backBtn} onClick={handleClose}>
-          Back
-        </button>
-
         <h2>{note.title}</h2>
         <p>{note.content}</p>
 
@@ -45,6 +41,10 @@ export default function NotePreview() {
 
         <span>{note.tag}</span>
       </div>
+
+      <button className={css.backBtn} onClick={handleClose}>
+        Back
+      </button>
     </Modal>
   );
 }
