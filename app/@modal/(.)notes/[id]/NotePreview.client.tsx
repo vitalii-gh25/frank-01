@@ -30,21 +30,21 @@ export default function NotePreview() {
   if (isLoading) return <p>Loading note...</p>;
   if (error || !note) return <p>Failed to load note.</p>;
 
-  const formattedDate = note.updatedAt
-    ? `Updated at: ${note.updatedAt}`
-    : `Created at: ${note.createdAt}`;
-
   return (
     <Modal onClose={handleClose}>
       <div className={css.container}>
+        <button className={css.backBtn} onClick={handleClose}>
+          Back
+        </button>
+
         <h2>{note.title}</h2>
         <p>{note.content}</p>
-        <p>{formattedDate}</p>
+
+        {/* ✅ ТІЛЬКИ createdAt */}
+        <p>Created at: {note.createdAt}</p>
+
         <span>{note.tag}</span>
       </div>
-      <button className={css.backBtn} onClick={handleClose}>
-        Back
-      </button>
     </Modal>
   );
 }
